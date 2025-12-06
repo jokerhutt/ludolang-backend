@@ -38,7 +38,8 @@ public class publicEndpointConstants {
             UNITS + GET_UNITS_FROM_IDS,
             USERS + GET_USER_BY_ID,
             USERS + GET_AVATARS,
-            COURSES + GET_USER_COURSES
+            COURSES + GET_USER_COURSES,
+            CATALOG + SECTION_TREE
     };
 
 }

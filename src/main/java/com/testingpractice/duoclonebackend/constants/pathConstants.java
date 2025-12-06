@@ -19,7 +19,7 @@ public class pathConstants {
   public static final String LEADERBOARD = API_V1 + "/leaderboard";
   public static final String AUTH = API_V1 + "/auth";
   // ----------------------------- GET REQUESTS -----------------------------
-  public static final String GET_USER_COURSE_PROGRESS = "/progress/{sectionId}";
+  public static final String GET_USER_COURSE_PROGRESS = "/progress/{courseId}";
   public static final String GET_USER_BY_ID = "/{userId}";
   public static final String GET_QUESTS_BY_USER = "/get";
   public static final String GET_MONTHLY_CHALLENGE_BY_USER = "/get";
@@ -69,7 +69,7 @@ public class pathConstants {
   public static final String AUTH_ME = "/me";
 
   public static final String CATALOG = API_V1 + "/catalog";
-  public static final String SECTION_TREE = API_V1 + "/{sectionId}/tree";
+  public static final String SECTION_TREE = "/{sectionId}/tree";
   public static final String UNITS_IDS = API_V1 + "/units/ids";
   public static final String LESSONS_IDS = API_V1 + "/lessons/ids";
   public static final String EXERCISES_LESSON_ID = API_V1 + "/exercises/{lessonId}";

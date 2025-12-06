@@ -42,5 +42,5 @@ public interface LessonCompletionRepository
   where lc.id.userId = :userId and lc.courseId = :courseId
 """)
   Integer countByUserAndCourse(
-      @Param("userId") Integer userId, @Param("sectionId") Integer courseId);
+      @Param("userId") Integer userId, @Param("courseId") Integer courseId);
 }
