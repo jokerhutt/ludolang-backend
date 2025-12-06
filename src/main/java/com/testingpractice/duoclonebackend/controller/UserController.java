@@ -21,7 +21,7 @@ public class UserController {
 
   @GetMapping(pathConstants.GET_USER_COURSE_PROGRESS)
   public UserCourseProgressDto getUserCourseProgress(
-      @PathVariable Integer courseId, @AuthenticationPrincipal(expression = "id") Integer userId) {
+      @PathVariable("courseId") Integer courseId, @AuthenticationPrincipal(expression = "id") Integer userId) {
     return userService.getUserCourseProgress(courseId, userId);
   }
 
