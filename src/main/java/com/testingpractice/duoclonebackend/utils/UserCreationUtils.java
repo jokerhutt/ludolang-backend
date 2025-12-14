@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class UserCreationUtils {
 
-  private static final String BASE_URL = "https://storage.googleapis.com/duoclone-media/av";
+  private static final String BASE_URL = "https://storage.googleapis.com/ludolang-media/av";
 
   public static String getRandomProfilePic() {
     int num = ThreadLocalRandom.current().nextInt(2, 14);
