@@ -19,13 +19,13 @@ public class AuthCookieService {
   @Value("${auth.cookie.path:/}")
   private String cookiePath;
 
-  @Value("${auth.cookie.domain:}")
+  @Value("${auth.cookie.domain}")
   private String cookieDomain;
 
-  @Value("${auth.cookie.same-site:Lax}")
+  @Value("${auth.cookie.same-site:none}")
   private String sameSite;
 
-  @Value("${auth.cookie.secure:false}")
+  @Value("${auth.cookie.secure:true}")
   private boolean secure;
 
   @Value("${auth.cookie.max-age-seconds:86400}")
