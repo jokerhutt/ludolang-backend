@@ -14,8 +14,6 @@ public class DuocloneBackendApplication {
   public static void main(String[] args) {
     SpringApplication.run(DuocloneBackendApplication.class, args);
   }
-
-
   @Configuration
   @Profile("!test")
   class ClockConfig {

@@ -10,6 +10,8 @@ public enum ErrorCode {
   PROGRESS_NOT_FOUND(HttpStatus.NOT_FOUND, "User progress not found"),
   EXERCISES_NOT_FOUND(HttpStatus.NOT_FOUND, "Exercises are null or empty for given lesson"),
   USER_DAILY_QUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "User daily quest not found"),
+  MONTHLY_CHALLENGE_NOT_FOUND(HttpStatus.NOT_FOUND, "Monthly Challenge not found"),
+  MONTHLY_CHALLENGE_INVALID(HttpStatus.BAD_REQUEST, "Monthly Challenge invalid"),
   QUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "Quest was not found"),
   COURSE_NOT_FOUND(HttpStatus.NOT_FOUND, "Course was not found"),
   COURSE_END(HttpStatus.BAD_REQUEST, "No next lesson — course complete"),

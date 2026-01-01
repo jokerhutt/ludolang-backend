@@ -2,6 +2,9 @@ package com.testingpractice.duoclonebackend.testutils;
 
 import com.testingpractice.duoclonebackend.entity.*;
 import com.testingpractice.duoclonebackend.follow.domain.entity.Follow;
+import com.testingpractice.duoclonebackend.quest.domain.entity.MonthlyChallengeDefinition;
+import com.testingpractice.duoclonebackend.quest.domain.entity.QuestDefinition;
+import com.testingpractice.duoclonebackend.quest.domain.entity.UserMonthlyChallenge;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
