@@ -5,6 +5,7 @@ import com.testingpractice.duoclonebackend.dto.UserDto;
 import com.testingpractice.duoclonebackend.entity.User;
 import com.testingpractice.duoclonebackend.mapper.UserMapper;
 import com.testingpractice.duoclonebackend.repository.UserRepository;
+import com.testingpractice.duoclonebackend.user.api.dto.UserResponse;
 import com.testingpractice.duoclonebackend.utils.UserCreationUtils;
 import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
@@ -45,7 +46,7 @@ public class UserCreationService {
   }
 
   @Transactional
-  public UserDto updateAvatar(Integer userId, String newAvatarSrc) {
+  public UserResponse updateAvatar(Integer userId, String newAvatarSrc) {
     User user = lookupService.userOrThrow(userId);
     user.setPfpSrc(newAvatarSrc);
     userRepository.save(user);

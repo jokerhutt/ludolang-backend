@@ -4,6 +4,8 @@ import com.testingpractice.duoclonebackend.entity.*;
 import com.testingpractice.duoclonebackend.exception.ApiException;
 import com.testingpractice.duoclonebackend.exception.ErrorCode;
 import com.testingpractice.duoclonebackend.repository.*;
+import com.testingpractice.duoclonebackend.user.domain.entity.User;
+import com.testingpractice.duoclonebackend.user.infra.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
