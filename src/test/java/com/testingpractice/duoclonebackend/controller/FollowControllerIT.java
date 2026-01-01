@@ -1,14 +1,12 @@
 package com.testingpractice.duoclonebackend.controller;
 
 import com.testingpractice.duoclonebackend.constants.pathConstants;
-import com.testingpractice.duoclonebackend.dto.FollowFollowingListResponse;
-import com.testingpractice.duoclonebackend.dto.FollowResponse;
 import com.testingpractice.duoclonebackend.entity.User;
 import com.testingpractice.duoclonebackend.exception.ErrorCode;
+import com.testingpractice.duoclonebackend.follow.api.dto.FollowFollowingListResponse;
+import com.testingpractice.duoclonebackend.follow.api.dto.FollowResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.List;
 import java.util.Map;
 
@@ -41,10 +39,10 @@ public class FollowControllerIT extends AbstractIntegrationTest{
         FollowResponse response = submitFollowPostBody(followerId, followedId, followPath);
 
         assertThat(response).isNotNull();
-        assertThat(response.followedNewStats().followerIds().size()).isEqualTo(1);
-        assertThat(response.followedNewStats().followingIds().size()).isEqualTo(0);
-        assertThat(response.followersNewStats().followingIds().size()).isEqualTo(1);
-        assertThat(response.followersNewStats().followerIds().size()).isEqualTo(0);
+        assertThat(response.getFollowedNewStats().getFollowerIds().size()).isEqualTo(1);
+        assertThat(response.getFollowedNewStats().getFollowingIds().size()).isEqualTo(0);
+        assertThat(response.getFollowersNewStats().getFollowingIds().size()).isEqualTo(1);
+        assertThat(response.getFollowersNewStats().getFollowerIds().size()).isEqualTo(0);
 
     }
 
@@ -62,10 +60,10 @@ public class FollowControllerIT extends AbstractIntegrationTest{
         FollowResponse response = submitFollowPostBody(followerId, followedId, unfollowPath);
 
         assertThat(response).isNotNull();
-        assertThat(response.followedNewStats().followerIds().size()).isEqualTo(0);
-        assertThat(response.followedNewStats().followingIds().size()).isEqualTo(0);
-        assertThat(response.followersNewStats().followingIds().size()).isEqualTo(0);
-        assertThat(response.followersNewStats().followerIds().size()).isEqualTo(0);
+        assertThat(response.getFollowedNewStats().getFollowerIds().size()).isEqualTo(0);
+        assertThat(response.getFollowedNewStats().getFollowingIds().size()).isEqualTo(0);
+        assertThat(response.getFollowersNewStats().getFollowingIds().size()).isEqualTo(0);
+        assertThat(response.getFollowersNewStats().getFollowerIds().size()).isEqualTo(0);
 
     }
 
@@ -137,8 +135,8 @@ public class FollowControllerIT extends AbstractIntegrationTest{
         FollowFollowingListResponse response = submitFollowRequestBody(userId);
 
         assertThat(response).isNotNull();
-        assertThat(response.followerIds().size()).isEqualTo(0);
-        assertThat(response.followingIds().size()).isEqualTo(0);
+        assertThat(response.getFollowerIds().size()).isEqualTo(0);
+        assertThat(response.getFollowingIds().size()).isEqualTo(0);
 
     }
 
@@ -160,8 +158,8 @@ public class FollowControllerIT extends AbstractIntegrationTest{
 
         FollowFollowingListResponse response = submitFollowRequestBody(userId);
         assertThat(response).isNotNull();
-        assertThat(response.followerIds().size()).isEqualTo(2);
-        assertThat(response.followingIds().size()).isEqualTo(1);
+        assertThat(response.getFollowerIds().size()).isEqualTo(2);
+        assertThat(response.getFollowingIds().size()).isEqualTo(1);
 
     }
 

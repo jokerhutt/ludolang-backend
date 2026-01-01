@@ -1,6 +1,7 @@
 package com.testingpractice.duoclonebackend.testutils;
 
 import com.testingpractice.duoclonebackend.entity.*;
+import com.testingpractice.duoclonebackend.follow.domain.entity.Follow;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -33,8 +34,17 @@ public class TestUtils {
     return User.builder().currentCourseId(currentCourseId).username(username).firstName(firstName).lastName(lastName).email(email).pfpSrc(pfpSrc).points(points).createdAt(createdAt).lastSubmission(lastSubmission).streakLength(streakLength).build();
   }
 
-  public static Follow makeFollow (Integer followerId, Integer followedId, Timestamp createdAt) {
-    return Follow.builder().followerId(followerId).followedId(followedId).createdAt(createdAt).build();
+  public static Follow makeFollow(
+          Integer followerId,
+          Integer followedId,
+          Timestamp createdAt
+  ) {
+    return new Follow(
+            null,
+            followerId,
+            followedId,
+            createdAt
+    );
   }
 
   public static UserMonthlyChallenge makeUserMonthlyChallenge (Integer userId, Integer defId, LocalDate today, Integer progress) {

@@ -2,6 +2,7 @@ package com.testingpractice.duoclonebackend.controller;
 
 import com.testingpractice.duoclonebackend.auth.AuthUser;
 import com.testingpractice.duoclonebackend.entity.*;
+import com.testingpractice.duoclonebackend.follow.infra.repository.FollowRepository;
 import com.testingpractice.duoclonebackend.repository.*;
 import io.restassured.RestAssured;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,11 +52,6 @@ import static com.testingpractice.duoclonebackend.testutils.TestUtils.*;
         AbstractIntegrationTest.TestSecurityConfig.class
 })
 public abstract class AbstractIntegrationTest {
-
-
-
-
-
 
   static { Containers.MYSQL.isRunning(); } // forces class load/start
 
@@ -120,7 +116,7 @@ public abstract class AbstractIntegrationTest {
   void restAssuredBase() {
     RestAssured.baseURI = "http://localhost";
     RestAssured.port = port;
-    resetDb(); // keep this
+    initializeCoursesSectionsAndLessons();
   }
 
   @TestConfiguration(proxyBeanMethods = false)
@@ -152,35 +148,6 @@ public abstract class AbstractIntegrationTest {
               }, UsernamePasswordAuthenticationFilter.class);
       return http.build();
     }
-  }
-
-  @BeforeEach
-  void resetDb() {
-    jdbc.execute("SET FOREIGN_KEY_CHECKS = 0");
-
-    jdbc.execute("TRUNCATE TABLE users");
-    jdbc.execute("ALTER TABLE users AUTO_INCREMENT = 1");
-    jdbc.execute("TRUNCATE TABLE course");
-    jdbc.execute("ALTER TABLE course AUTO_INCREMENT = 1");
-    jdbc.execute("TRUNCATE TABLE sections");
-    jdbc.execute("TRUNCATE TABLE units");
-    jdbc.execute("TRUNCATE TABLE lessons");
-    jdbc.execute("TRUNCATE TABLE user_monthly_challenge");
-    jdbc.execute("TRUNCATE TABLE exercises");
-    jdbc.execute("TRUNCATE TABLE exercise_attempts");
-    jdbc.execute("TRUNCATE TABLE lesson_completions");
-    jdbc.execute("TRUNCATE TABLE user_course_progress");
-    jdbc.execute("TRUNCATE TABLE quest_definition");
-    jdbc.execute("TRUNCATE TABLE monthly_challenge_definition");
-    jdbc.execute("TRUNCATE TABLE user_daily_quest");
-    jdbc.execute("TRUNCATE TABLE user_monthly_challenge");
-    jdbc.execute("TRUNCATE TABLE follows");
-    jdbc.execute("TRUNCATE TABLE exercise_options");
-    jdbc.execute("TRUNCATE TABLE exercise_attempt_option");
-
-    jdbc.execute("SET FOREIGN_KEY_CHECKS = 1");
-
-    initializeCoursesSectionsAndLessons(); // your seeding
   }
 
   protected void initializeCoursesSectionsAndLessons () {
