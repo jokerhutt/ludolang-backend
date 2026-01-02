@@ -20,8 +20,6 @@ The project is written using Kotlin 1.9.25 and Java 21. It uses MySQL as a datab
 
 ## Project Setup
 
-If you are only interested in running the project locally, I have provided a setup that creates a local MySQL instance with the schema & pre-seeded with a demo user / course. With this, you'll have access to all features except AI and Google authentication.
-
 1. Clone the project
 ```
 git@github.com:jokerhutt/ludolang-backend.git
