@@ -18,4 +18,4 @@ data class UserMonthlyChallengeId(
 
     @Column(name = "month")
     val month: Int
-) : Serializable
+)

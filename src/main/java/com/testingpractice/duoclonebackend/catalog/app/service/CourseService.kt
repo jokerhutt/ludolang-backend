@@ -8,10 +8,9 @@ import com.testingpractice.duoclonebackend.catalog.infra.repository.UnitReposito
 import com.testingpractice.duoclonebackend.commons.exception.ApiException
 import com.testingpractice.duoclonebackend.commons.exception.ErrorCode
 import com.testingpractice.duoclonebackend.progress.api.dto.ChangeCourseDto
+import com.testingpractice.duoclonebackend.progress.app.service.CourseProgressService
 import com.testingpractice.duoclonebackend.progress.domain.entity.UserCourseProgress
 import com.testingpractice.duoclonebackend.progress.infra.repository.UserCourseProgressRepository
-import com.testingpractice.duoclonebackend.service.CourseProgressService
-import com.testingpractice.duoclonebackend.service.LookupService
 import com.testingpractice.duoclonebackend.user.app.mapper.UserMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -76,6 +75,6 @@ open class CourseService(
             lessonRepository.findFirstByUnitIdOrderByOrderIndexAsc(firstUnit.id!!)
                 ?: throw ApiException(ErrorCode.UNIT_NOT_FOUND)
 
-        return firstLesson.id
+        return firstLesson.id!!
     }
 }

@@ -1,100 +1,178 @@
-package com.testingpractice.duoclonebackend.controller;
+package com.testingpractice.duoclonebackend.controller
 
-import com.testingpractice.duoclonebackend.commons.constants.pathConstants;
-import com.testingpractice.duoclonebackend.dto.QuestResponse;
-import com.testingpractice.duoclonebackend.entity.User;
-import io.restassured.common.mapper.TypeRef;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants
+import com.testingpractice.duoclonebackend.quest.api.dto.QuestResponse
+import com.testingpractice.duoclonebackend.testutils.TestConstants.FIXED_DATE_1
+import com.testingpractice.duoclonebackend.testutils.TestConstants.FIXED_DATE_2
+import com.testingpractice.duoclonebackend.testutils.TestConstants.FIXED_DATE_2_1
+import com.testingpractice.duoclonebackend.testutils.TestConstants.FIXED_TIMESTAMP_1
+import com.testingpractice.duoclonebackend.testutils.TestConstants.FIXED_TIMESTAMP_2
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeUser
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeUserDailyQuest
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeUserMonthlyChallenge
+import io.restassured.common.mapper.TypeRef
+import io.restassured.RestAssured.given
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-import java.util.List;
 
-import static com.testingpractice.duoclonebackend.testutils.TestConstants.*;
-import static com.testingpractice.duoclonebackend.testutils.TestUtils.*;
-import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class QuestControllerIT extends AbstractIntegrationTest{
+class QuestControllerIT : AbstractIntegrationTest() {
 
     @BeforeEach
-    void seed () {
-
+    fun seed() {
     }
 
     @Test
-    void getUserDailyQuest_noneExisting_createsAndReturnsNew () {
+    fun getUserDailyQuest_noneExisting_createsAndReturnsNew() {
 
-        User user = userRepository.save(makeUser(course1.getId(), "testUser", "test", "user", "testemail", "pfp", 0, FIXED_TIMESTAMP_1, FIXED_TIMESTAMP_2, 0));
-        Integer userId = user.getId();
+        val user =
+            userRepository.save(
+                makeUser(
+                    course1.id,
+                    "testUser",
+                    "test",
+                    "user",
+                    "testemail",
+                    "pfp",
+                    0,
+                    FIXED_TIMESTAMP_1,
+                    FIXED_TIMESTAMP_2,
+                    0
+                )
+            )
 
-        userMonthlyChallengeRepository.save(makeUserMonthlyChallenge(userId, monthlyChallengeDefinition.getId(), FIXED_DATE_2_1, 2));
+        val userId = user.id!!
 
-        List<QuestResponse> response = submitUserDailyQuestProgressRequest(userId);
+        userMonthlyChallengeRepository.save(
+            makeUserMonthlyChallenge(
+                userId,
+                monthlyChallengeDefinition.id!!,
+                FIXED_DATE_2_1,
+                2
+            )
+        )
 
-        assertThat(response).isNotEmpty();
+        val response = submitUserDailyQuestProgressRequest(userId)
 
-        for (QuestResponse res: response) {
-            assertThat(res.active()).isEqualTo(true);
-            assertThat(res.progress()).isEqualTo(0);
+        assertThat(response).isNotEmpty
+
+        for (res in response) {
+            assertThat(res.active).isEqualTo(true)
+            assertThat(res.progress).isEqualTo(0)
         }
-
     }
 
     @Test
-    void getUserDailyQuest_nextDay_returnsNew () {
+    fun getUserDailyQuest_nextDay_returnsNew() {
 
-        User user = userRepository.save(makeUser(course1.getId(), "testUser", "test", "user", "testemail", "pfp", 0, FIXED_TIMESTAMP_1, FIXED_TIMESTAMP_2, 0));
-        Integer userId = user.getId();
+        val user =
+            userRepository.save(
+                makeUser(
+                    course1.id,
+                    "testUser",
+                    "test",
+                    "user",
+                    "testemail",
+                    "pfp",
+                    0,
+                    FIXED_TIMESTAMP_1,
+                    FIXED_TIMESTAMP_2,
+                    0
+                )
+            )
 
-        userMonthlyChallengeRepository.save(makeUserMonthlyChallenge(userId, monthlyChallengeDefinition.getId(), FIXED_DATE_1, 2));
+        val userId = user.id
 
-        for (int i = 0; i < questDefinitions.size(); i++) {
-            userDailyQuestRepository.save(makeUserDailyQuest(userId, questDefinitions.get(i).getId(), FIXED_DATE_1, 1));
+        userMonthlyChallengeRepository.save(
+            makeUserMonthlyChallenge(
+                userId!!,
+                monthlyChallengeDefinition.id!!,
+                FIXED_DATE_1,
+                2
+            )
+        )
+
+        for (i in questDefinitions.indices) {
+            userDailyQuestRepository.save(
+                makeUserDailyQuest(
+                    userId,
+                    questDefinitions[i].id!!,
+                    FIXED_DATE_1,
+                    1
+                )
+            )
         }
 
-        List<QuestResponse> response = submitUserDailyQuestProgressRequest(userId);
+        val response = submitUserDailyQuestProgressRequest(userId)
 
-        assertThat(response).isNotEmpty();
+        assertThat(response).isNotEmpty
 
-        for (QuestResponse res: response) {
-            assertThat(res.active()).isEqualTo(true);
-            assertThat(res.progress()).isEqualTo(0);
+        for (res in response) {
+            assertThat(res.active).isEqualTo(true)
+            assertThat(res.progress).isEqualTo(0)
         }
-
     }
 
     @Test
-    void getUserDailyQuest_existing_returnsExisting () {
-        User user = userRepository.save(makeUser(course1.getId(), "testUser", "test", "user", "testemail", "pfp", 0, FIXED_TIMESTAMP_1, FIXED_TIMESTAMP_2, 0));
-        Integer userId = user.getId();
+    fun getUserDailyQuest_existing_returnsExisting() {
 
-        userMonthlyChallengeRepository.save(makeUserMonthlyChallenge(userId, monthlyChallengeDefinition.getId(), FIXED_DATE_1, 2));
+        val user =
+            userRepository.save(
+                makeUser(
+                    course1.id,
+                    "testUser",
+                    "test",
+                    "user",
+                    "testemail",
+                    "pfp",
+                    0,
+                    FIXED_TIMESTAMP_1,
+                    FIXED_TIMESTAMP_2,
+                    0
+                )
+            )
 
-        for (int i = 0; i < questDefinitions.size(); i++) {
-            userDailyQuestRepository.save(makeUserDailyQuest(userId, questDefinitions.get(i).getId(), FIXED_DATE_2, 1));
+        val userId = user.id!!
+
+        userMonthlyChallengeRepository.save(
+            makeUserMonthlyChallenge(
+                userId,
+                monthlyChallengeDefinition.id!!,
+                FIXED_DATE_1,
+                2
+            )
+        )
+
+        for (i in questDefinitions.indices) {
+            userDailyQuestRepository.save(
+                makeUserDailyQuest(
+                    userId,
+                    questDefinitions[i].id!!,
+                    FIXED_DATE_2,
+                    1
+                )
+            )
         }
 
-        List<QuestResponse> response = submitUserDailyQuestProgressRequest(userId);
+        val response = submitUserDailyQuestProgressRequest(userId)
 
-        assertThat(response).isNotEmpty();
+        assertThat(response).isNotEmpty
 
-        for (QuestResponse res: response) {
-            assertThat(res.active()).isEqualTo(true);
-            assertThat(res.progress()).isEqualTo(1);
+        for (res in response) {
+            assertThat(res.active).isEqualTo(true)
+            assertThat(res.progress).isEqualTo(1)
         }
-
     }
 
-
-    private List<QuestResponse> submitUserDailyQuestProgressRequest(Integer userId) {
+    private fun submitUserDailyQuestProgressRequest(userId: Int): List<QuestResponse> {
         return given()
-                .header("X-Test-User-Id", userId)
-                .when()
-                .get(pathConstants.QUESTS + pathConstants.GET_QUESTS_BY_USER)
-                .then()
-                .statusCode(200)
-                .extract()
-                .as(new TypeRef<List<QuestResponse>>() {});
+            .header("X-Test-User-Id", userId)
+            .`when`()
+            .get(pathConstants.QUESTS + pathConstants.GET_QUESTS_BY_USER)
+            .then()
+            .statusCode(200)
+            .extract()
+            .`as`(object : TypeRef<List<QuestResponse>>() {})
     }
-
 }

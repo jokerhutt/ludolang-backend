@@ -1,9 +1,9 @@
 package com.testingpractice.duoclonebackend.user.api.controller
 import com.testingpractice.duoclonebackend.commons.constants.pathConstants
-import com.testingpractice.duoclonebackend.dto.UserCourseProgressDto
-import com.testingpractice.duoclonebackend.service.UserCreationService
+import com.testingpractice.duoclonebackend.progress.api.dto.UserCourseProgressDto
 import com.testingpractice.duoclonebackend.user.api.dto.UpdateAvatarRequest
 import com.testingpractice.duoclonebackend.user.api.dto.UserResponse
+import com.testingpractice.duoclonebackend.user.app.service.UserCreationService
 import com.testingpractice.duoclonebackend.user.app.service.UserService
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping

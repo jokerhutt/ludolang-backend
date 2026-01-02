@@ -31,5 +31,5 @@ interface UserRepository : JpaRepository<User, Int> {
         pageable: Pageable
     ): List<User>
 
-    fun findByEmail(email: String): Optional<Any>
+    fun findByEmail(email: String): Optional<User>
 }

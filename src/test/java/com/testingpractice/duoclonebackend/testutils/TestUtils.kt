@@ -1,130 +1,224 @@
 package com.testingpractice.duoclonebackend.testutils;
 
-import com.testingpractice.duoclonebackend.entity.*;
-import com.testingpractice.duoclonebackend.follow.domain.entity.Follow;
-import com.testingpractice.duoclonebackend.quest.domain.entity.MonthlyChallengeDefinition;
-import com.testingpractice.duoclonebackend.quest.domain.entity.QuestDefinition;
-import com.testingpractice.duoclonebackend.quest.domain.entity.UserMonthlyChallenge;
+import com.testingpractice.duoclonebackend.catalog.domain.entity.Course
+import com.testingpractice.duoclonebackend.catalog.domain.entity.Exercise
+import com.testingpractice.duoclonebackend.catalog.domain.entity.Lesson
+import com.testingpractice.duoclonebackend.catalog.domain.entity.LudoUnit
+import com.testingpractice.duoclonebackend.catalog.domain.entity.Section
+import com.testingpractice.duoclonebackend.follow.domain.entity.Follow
+import com.testingpractice.duoclonebackend.progress.domain.entity.ExerciseAttempt
+import com.testingpractice.duoclonebackend.progress.domain.entity.LessonCompletion
+import com.testingpractice.duoclonebackend.progress.domain.entity.UserCourseProgress
+import com.testingpractice.duoclonebackend.progress.domain.entity.embeddable.LessonCompletionId
+import com.testingpractice.duoclonebackend.quest.domain.entity.MonthlyChallengeDefinition
+import com.testingpractice.duoclonebackend.quest.domain.entity.QuestDefinition
+import com.testingpractice.duoclonebackend.quest.domain.entity.UserDailyQuest
+import com.testingpractice.duoclonebackend.quest.domain.entity.UserMonthlyChallenge
+import com.testingpractice.duoclonebackend.quest.domain.entity.embeddable.UserDailyQuestId
+import com.testingpractice.duoclonebackend.quest.domain.entity.embeddable.UserMonthlyChallengeId
+import com.testingpractice.duoclonebackend.user.domain.entity.User
+import java.sql.Timestamp
+import java.time.LocalDate
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
+object TestUtils {
 
-import static com.testingpractice.duoclonebackend.testutils.TestConstants.FIXED_TIMESTAMP_1;
+fun makeUnit(
+        title: String,
+        courseId: Int,
+        sectionId: Int,
+        orderIndex: Int
+) = LudoUnit(
+        id = null,
+        title = title,
+        description = "Default description",
+        orderIndex = orderIndex,
+        courseId = courseId,
+        sectionId = sectionId,
+        animationPath = "Default animation path",
+        color = "GREEN"
+)
 
-public class TestUtils {
+        fun makeQuestDefinition(
+                code: String,
+                target: Int,
+                rewardPoints: Int,
+                active: Boolean
+        ) = QuestDefinition(
+                id = null,
+                code = code,
+                target = target,
+                rewardPoints = rewardPoints,
+                active = active
+        )
 
-  public static Unit makeUnit(String title, int courseId, int section, int orderIndex) {
-    return Unit.builder()
-        .title(title)
-        .description("Default description")
-        .orderIndex(orderIndex)
-        .courseId(courseId)
-        .sectionId(section)
-            .color("GREEN")
-            .animationPath("Default animation path")
-        .build();
-  }
+        fun makeMonthlyChallengeDefinition(
+                code: String,
+                target: Int,
+                rewardPoints: Int,
+                active: Boolean
+        ) = MonthlyChallengeDefinition(
+                id = null,
+                code = code,
+                target = target,
+                rewardPoints = rewardPoints,
+                active = active
+        )
 
-  public static QuestDefinition makeQuestDefition (String code, Integer target, Integer rewardPoints, boolean active) {
-    return QuestDefinition.builder().code(code).target(target).rewardPoints(rewardPoints).active(active).build();
-  }
+fun makeUser(
+        currentCourseId: Int?,
+        username: String,
+        firstName: String,
+        lastName: String,
+        email: String,
+        pfpSrc: String,
+        points: Int = 0,
+        createdAt: Timestamp,
+        lastSubmission: Timestamp?,
+        streakLength: Int = 0
+) = User(
+        id = null,
+        currentCourseId = currentCourseId,
+        username = username,
+        firstName = firstName,
+        lastName = lastName,
+        email = email,
+        pfpSrc = pfpSrc,
+        points = points,
+        createdAt = createdAt,
+        lastSubmission = lastSubmission,
+        streakLength = streakLength
+)
 
-  public static MonthlyChallengeDefinition makeMonthlyChallengeDefinition (String code, Integer target, Integer rewardPoints, boolean active) {
-    return MonthlyChallengeDefinition.builder().code(code).target(target).rewardPoints(rewardPoints).active(active).build();
-  }
+fun makeFollow(
+        followerId: Int,
+        followedId: Int,
+        createdAt: Timestamp
+) = Follow(
+        id = null,
+        followerId = followerId,
+        followedId = followedId,
+        createdAt = createdAt
+)
 
-  public static User makeUser(Integer currentCourseId, String username, String firstName, String lastName, String email, String pfpSrc, Integer points, Timestamp createdAt, Timestamp lastSubmission, Integer streakLength) {
-    return User.builder().currentCourseId(currentCourseId).username(username).firstName(firstName).lastName(lastName).email(email).pfpSrc(pfpSrc).points(points).createdAt(createdAt).lastSubmission(lastSubmission).streakLength(streakLength).build();
-  }
+fun makeUserMonthlyChallenge(
+        userId: Int,
+        defId: Int,
+        today: LocalDate,
+        progress: Int
+) = UserMonthlyChallenge(
+        id = UserMonthlyChallengeId(
+                userId = userId,
+                challengeDefId = defId,
+                year = today.year,
+                month = today.monthValue
+        ),
+        progress = progress,
+        rewardClaimed = false,
+        completedAt = null
+)
 
-  public static Follow makeFollow(
-          Integer followerId,
-          Integer followedId,
-          Timestamp createdAt
-  ) {
-    return new Follow(
-            null,
-            followerId,
-            followedId,
-            createdAt
-    );
-  }
+fun makeUserDailyQuest(
+        userId: Int,
+        defId: Int,
+        today: LocalDate,
+        progress: Int
+) = UserDailyQuest(
+        id = UserDailyQuestId(
+                userId = userId,
+                questDefId = defId,
+                date = today
+        ),
+        progress = progress,
+        rewardClaimed = false,
+        completedAt = null
+)
 
-  public static UserMonthlyChallenge makeUserMonthlyChallenge (Integer userId, Integer defId, LocalDate today, Integer progress) {
+fun makeCourse(
+        title: String,
+        imgSrc: String = "Default"
+) = Course(
+        id = null,
+        title = title,
+        imgSrc = imgSrc
+)
 
-    return UserMonthlyChallenge.builder()
-            .id(UserMonthlyChallengeId.builder()
-                    .userId(userId)
-                    .challengeDefId(defId)
-                    .year(today.getYear())
-                    .month(today.getMonthValue())
-                    .build())
-            .progress(progress)
-            .rewardClaimed(false)
-            .completedAt(null)
-            .build();
-  }
+fun makeUserCourseProgress(
+        userId: Int,
+        courseId: Int,
+        isComplete: Boolean,
+        currentLessonId: Int?,
+        updatedAt: Timestamp
+) = UserCourseProgress(
+        id = null,
+        userId = userId,
+        courseId = courseId,
+        isComplete = isComplete,
+        currentLessonId = currentLessonId,
+        updatedAt = updatedAt
+)
 
-  public static UserDailyQuest makeUserDailyQuest (Integer userId, Integer defId, LocalDate today, Integer progress) {
+fun makeSection(
+        title: String,
+        courseId: Int,
+        orderIndex: Int
+) = Section(
+        id = null,
+        title = title,
+        courseId = courseId,
+        orderIndex = orderIndex
+)
 
-    return UserDailyQuest.builder()
-            .id(UserDailyQuestId.builder()
-                    .userId(userId)
-                    .questDefId(defId)
-                    .date(today)
-                    .build())
-            .progress(progress)
-            .rewardClaimed(false)
-            .completedAt(null)
-            .build();
-  }
+fun makeExercise(
+        lessonId: Int,
+        prompt: String,
+        orderIndex: Int
+) = Exercise(
+        id = null,
+        lessonId = lessonId,
+        prompt = prompt,
+        type = "CLOZE",
+        orderIndex = orderIndex
+)
 
-  public static Course makeCourse(String title, String imgSrc) {
-    return Course.builder().title(title).imgSrc(imgSrc).build();
-  }
+fun makeExerciseAttempt(
+        exerciseId: Int,
+        userId: Int,
+        isChecked: Boolean,
+        submittedAt: Timestamp,
+        optionId: Int?,
+        score: Int?
+) = ExerciseAttempt(
+        id = null,
+        exerciseId = exerciseId,
+        userId = userId,
+        isChecked = isChecked,
+        submittedAt = submittedAt,
+        optionId = optionId,
+        score = score
+)
 
-  public static UserCourseProgress makeUserCourseProgress(Integer userId, Integer courseId, Boolean isComplete, Integer currentLessonId, Timestamp updatedAt) {
-    return UserCourseProgress.builder().userId(userId).courseId(courseId).isComplete(isComplete).currentLessonId(currentLessonId).updatedAt(updatedAt) .build();
-  }
+fun makeLesson(
+        title: String,
+        unitId: Int,
+        orderIndex: Int,
+        lessonType: String
+) = Lesson(
+        id = null,
+        title = title,
+        unitId = unitId,
+        lessonType = lessonType,
+        orderIndex = orderIndex
+)
 
-  public static Section makeSection(String title, Integer courseId, Integer orderIndex) {
-    return Section.builder().title(title).courseId(courseId).orderIndex(orderIndex).build();
-  }
-
-  public static Exercise makeExercise(Integer lessonId, String prompt, Integer orderIndex) {
-    return Exercise.builder().lessonId(lessonId).prompt(prompt).orderIndex(orderIndex).type("CLOZE").build();
-  }
-
-  public static ExerciseAttempt makeExerciseAttempt(
-          Integer exerciseId, Integer userId, boolean isChecked, Timestamp submittedAt, Integer optionId, Integer score
-  ) {
-    return ExerciseAttempt.builder()
-            .exerciseId(exerciseId)
-            .userId(userId)
-            .isChecked(isChecked)
-            .submittedAt(submittedAt)
-            .optionId(optionId)
-            .score(score)
-            .build();
-  }
-
-  public static Course makeCourse(String title) {
-    return Course.builder().title(title).imgSrc("Default").build();
-  }
-
-  public static Lesson makeLesson(String title, Integer unitId, Integer orderIndex, String lessonType) {
-    return Lesson.builder().title(title).unitId(unitId).orderIndex(orderIndex).lessonType(lessonType).build();
-  }
-
-  public static LessonCompletion makeLessonCompletion(
-          Integer userId, Integer lessonId, Integer courseId, Integer score
-  ) {
-    return LessonCompletion.builder()
-            .id(new LessonCompletionId(userId, lessonId))
-            .score(100)
-            .courseId(1)
-            .completedAt(new Timestamp(System.currentTimeMillis()))
-            .build();
-  }
-
-}
+fun makeLessonCompletion(
+        userId: Int,
+        lessonId: Int,
+        courseId: Int,
+        score: Int
+) = LessonCompletion(
+        id = LessonCompletionId(userId, lessonId),
+        courseId = courseId,
+        score = score,
+        completedAt = Timestamp(System.currentTimeMillis())
+)
+        }

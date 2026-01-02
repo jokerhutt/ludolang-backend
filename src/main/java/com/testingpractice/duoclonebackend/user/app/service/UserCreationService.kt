@@ -1,9 +1,9 @@
 package com.testingpractice.duoclonebackend.user.app.service
 
-import com.testingpractice.duoclonebackend.dto.GoogleUserInfo
+import com.testingpractice.duoclonebackend.auth.api.dto.GoogleUserInfo
+import com.testingpractice.duoclonebackend.catalog.app.service.LookupService
 import com.testingpractice.duoclonebackend.quest.app.service.MonthlyChallengeService
 import com.testingpractice.duoclonebackend.quest.app.service.QuestService
-import com.testingpractice.duoclonebackend.service.LookupService
 import com.testingpractice.duoclonebackend.user.api.dto.UserResponse
 import com.testingpractice.duoclonebackend.user.app.mapper.UserMapper
 import com.testingpractice.duoclonebackend.user.app.util.UserCreationUtils
@@ -28,8 +28,8 @@ open class UserCreationService(
         val newUser = User(
             id = null,
             email = googleUser.email,
-            firstName = googleUser.givenName,
-            lastName = googleUser.familyName,
+            firstName = googleUser.givenName!!,
+            lastName = googleUser.familyName!!,
             username = UserCreationUtils.generateUsername(googleUser.name),
             currentCourseId = null,
             pfpSrc = UserCreationUtils.getRandomProfilePic(),

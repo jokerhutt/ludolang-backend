@@ -1,13 +1,15 @@
 package com.testingpractice.duoclonebackend.user.app.service
-import com.testingpractice.duoclonebackend.dto.UserCourseProgressDto
-import com.testingpractice.duoclonebackend.entity.UserCourseProgress
+
+import com.testingpractice.duoclonebackend.catalog.app.service.CourseService
 import com.testingpractice.duoclonebackend.commons.exception.ApiException
 import com.testingpractice.duoclonebackend.commons.exception.ErrorCode
-import com.testingpractice.duoclonebackend.mapper.UserCourseProgressMapper
-import com.testingpractice.duoclonebackend.repository.LessonCompletionRepository
-import com.testingpractice.duoclonebackend.repository.UserCourseProgressRepository
-import com.testingpractice.duoclonebackend.service.CourseProgressService
-import com.testingpractice.duoclonebackend.service.CourseService
+import com.testingpractice.duoclonebackend.progress.api.dto.UserCourseProgressDto
+import com.testingpractice.duoclonebackend.progress.app.mapper.UserCourseProgressMapper
+import com.testingpractice.duoclonebackend.progress.app.service.CourseProgressService
+import com.testingpractice.duoclonebackend.progress.domain.entity.UserCourseProgress
+import com.testingpractice.duoclonebackend.progress.infra.repository.LessonCompletionRepository
+import com.testingpractice.duoclonebackend.progress.infra.repository.UserCourseProgressRepository
+
 import com.testingpractice.duoclonebackend.user.api.dto.UserResponse
 import com.testingpractice.duoclonebackend.user.app.mapper.UserMapper
 import com.testingpractice.duoclonebackend.user.domain.entity.User
@@ -58,7 +60,7 @@ open class UserService(
 
         val lessonSectionId =
             courseProgressService.getLessonSectionId(
-                userCourseProgress.currentLessonId
+                userCourseProgress.currentLessonId ?: throw ApiException(ErrorCode.LESSON_NOT_FOUND, "There was an error finding the first lesson of the selected course: $courseId")
             )
 
         return userCourseProgressMapper.toDto(

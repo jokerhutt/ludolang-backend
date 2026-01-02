@@ -1,13 +1,15 @@
 package com.testingpractice.duoclonebackend.utils;
 
-import java.sql.Timestamp;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.sql.Timestamp
+import java.time.Clock
+import java.time.Instant
+import java.time.LocalDate
 
-public final class DateUtils {
-    private DateUtils() {}
-    public static LocalDate today(Clock clock) { return LocalDate.now(clock); }
-    public static Timestamp nowTs(Clock clock) { return Timestamp.from(Instant.now(clock)); }
-}
+object DateUtils {
+
+fun today(clock: Clock): LocalDate =
+        LocalDate.now(clock)
+
+fun nowTs(clock: Clock): Timestamp =
+        Timestamp.from(Instant.now(clock))
+        }

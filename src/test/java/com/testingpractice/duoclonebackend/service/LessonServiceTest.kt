@@ -1,74 +1,80 @@
-package com.testingpractice.duoclonebackend.service;
-
-import static com.testingpractice.duoclonebackend.testutils.TestConstants.*;
-import static com.testingpractice.duoclonebackend.testutils.TestUtils.makeLesson;
-import static com.testingpractice.duoclonebackend.testutils.TestUtils.makeLessonCompletion;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.testingpractice.duoclonebackend.dto.LessonDto;
-import com.testingpractice.duoclonebackend.entity.Lesson;
-import com.testingpractice.duoclonebackend.mapper.LessonMapperImpl;
-import com.testingpractice.duoclonebackend.repository.LessonCompletionRepository;
-import com.testingpractice.duoclonebackend.repository.LessonRepository;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+package com.testingpractice.duoclonebackend.service
+import com.testingpractice.duoclonebackend.catalog.api.dto.LessonDto
+import com.testingpractice.duoclonebackend.catalog.app.mapper.LessonMapper
+import com.testingpractice.duoclonebackend.catalog.app.service.LessonService
+import com.testingpractice.duoclonebackend.catalog.domain.entity.Lesson
+import com.testingpractice.duoclonebackend.catalog.infra.repository.LessonRepository
+import com.testingpractice.duoclonebackend.commons.mapper.BasicMapper
+import com.testingpractice.duoclonebackend.progress.infra.repository.LessonCompletionRepository
+import com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_1_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_2_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_3_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_4_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeLesson
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeLessonCompletion
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.context.annotation.Import
 
 @DataJpaTest
-@Import({LessonServiceImpl.class, LessonMapperImpl.class})
-public class LessonServiceTest {
+@Import(LessonService::class, BasicMapper::class, LessonMapper::class)
+open class LessonServiceTest {
 
-  @Autowired private LessonServiceImpl service;
-  @Autowired private LessonRepository repo;
-  @Autowired private LessonCompletionRepository lessonCompletionRepository;
+    @Autowired
+    lateinit var service: LessonService
 
-  private Lesson l1;
-  private Lesson l2;
-  private Lesson l3;
-  private Lesson l4;
+    @Autowired
+    lateinit var repo: LessonRepository
 
-  @BeforeEach
-  void setUp() {
-    repo.deleteAll();
-    lessonCompletionRepository.deleteAll();
+    @Autowired
+    lateinit var lessonCompletionRepository: LessonCompletionRepository
 
-    List<Lesson> savedLessons = repo.saveAll(List.of(
-            makeLesson(LESSON_1_TITLE, 2, 1, "Exercise"),
-            makeLesson(LESSON_2_TITLE, 2, 2, "Exercise"),
-            makeLesson(LESSON_3_TITLE, 2, 3, "Exercise"),
-            makeLesson(LESSON_4_TITLE, 1, 3, "Exercise")
-    ));
+    lateinit var l1: Lesson
+    lateinit var l2: Lesson
+    lateinit var l3: Lesson
+    lateinit var l4: Lesson
 
-    l1 = savedLessons.get(0);
-    l2 = savedLessons.get(1);
-    l3 = savedLessons.get(2);
-    l4 = savedLessons.get(3);
+    @BeforeEach
+    fun setUp() {
+        repo.deleteAll()
+        lessonCompletionRepository.deleteAll()
 
-    lessonCompletionRepository.saveAll(List.of(
-            makeLessonCompletion(1, l1.getId(), 1, 15),
-            makeLessonCompletion(1, l2.getId(), 1, 20),
-            makeLessonCompletion(1, l4.getId(), 1, 10)
-    ));
-  }
+        val savedLessons = repo.saveAll(
+            listOf(
+                makeLesson(LESSON_1_TITLE, 2, 1, "Exercise"),
+                makeLesson(LESSON_2_TITLE, 2, 2, "Exercise"),
+                makeLesson(LESSON_3_TITLE, 2, 3, "Exercise"),
+                makeLesson(LESSON_4_TITLE, 1, 3, "Exercise")
+            )
+        )
 
-  @Test
-  void getLessonsByUnit_returnsExpectedDtos() {
+        l1 = savedLessons[0]
+        l2 = savedLessons[1]
+        l3 = savedLessons[2]
+        l4 = savedLessons[3]
 
-    //Should only have one because l3 is not passed and l4 is not in unit 2
-    List<LessonDto> result = service.getLessonsByUnit(2, 1);
-    assertThat(result).hasSize(3);
-    assertThat(result)
-            .extracting(LessonDto::isPassed)
-            .filteredOn(completed -> !completed)
-            .hasSize(1);
+        lessonCompletionRepository.saveAll(
+            listOf(
+                makeLessonCompletion(1, l1.id!!, 1, 15),
+                makeLessonCompletion(1, l2.id!!, 1, 20),
+                makeLessonCompletion(1, l4.id!!, 1, 10)
+            )
+        )
+    }
 
-  }
+    @Test
+    fun getLessonsByUnit_returnsExpectedDtos() {
 
+        // Should only have one because l3 is not passed and l4 is not in unit 2
+        val result: List<LessonDto> = service.getLessonsByUnit(2, 1)
 
-
-
+        assertThat(result).hasSize(3)
+        assertThat(result)
+            .extracting<Boolean> { it.isPassed }
+            .filteredOn { completed -> !completed }
+            .hasSize(1)
+    }
 }

@@ -1,39 +1,46 @@
-package com.testingpractice.duoclonebackend.service;
+package com.testingpractice.duoclonebackend.service
 
-import static com.testingpractice.duoclonebackend.testutils.TestConstants.*;
-import static com.testingpractice.duoclonebackend.testutils.TestUtils.makeUnit;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.testingpractice.duoclonebackend.dto.UnitDto;
-import com.testingpractice.duoclonebackend.mapper.UnitMapperImpl;
-import com.testingpractice.duoclonebackend.repository.UnitRepository;
-import java.util.List;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import com.testingpractice.duoclonebackend.catalog.api.dto.UnitDto
+import com.testingpractice.duoclonebackend.catalog.app.mapper.UnitMapper
+import com.testingpractice.duoclonebackend.catalog.infra.repository.UnitRepository
+import com.testingpractice.duoclonebackend.commons.mapper.BasicMapper
+import com.testingpractice.duoclonebackend.progress.app.service.UnitService
+import com.testingpractice.duoclonebackend.testutils.TestConstants.UNIT_1_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestConstants.UNIT_2_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestConstants.UNIT_3_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeUnit
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.context.annotation.Import
 
 @DataJpaTest
-@Import({UnitServiceImpl.class, UnitMapperImpl.class})
-class UnitServiceTest {
+@Import(UnitService::class, BasicMapper::class, UnitMapper::class)
+open class UnitServiceTest {
 
-  @Autowired private UnitServiceImpl service;
-  @Autowired private UnitRepository repo;
+    @Autowired
+    lateinit var service: UnitService
 
-  @Test
-  void getUnitsByCourse_returnsExpectedDtos() {
+    @Autowired
+    lateinit var repo: UnitRepository
 
-    repo.saveAll(
-        List.of(
-            makeUnit(UNIT_1_TITLE, 1, 1, 1),
-            makeUnit(UNIT_2_TITLE, 1, 2, 5),
-            makeUnit(UNIT_3_TITLE, 2, 1, 2)));
+    @Test
+    fun getUnitsByCourse_returnsExpectedDtos() {
 
-    List<UnitDto> result = service.getUnitsBySection(1);
+        repo.saveAll(
+            listOf(
+                makeUnit(UNIT_1_TITLE, 1, 1, 1),
+                makeUnit(UNIT_2_TITLE, 1, 2, 5),
+                makeUnit(UNIT_3_TITLE, 2, 1, 2)
+            )
+        )
 
-    assertThat(result).hasSize(2);
-    assertThat(result)
-        .extracting(UnitDto::title)
-        .containsExactlyInAnyOrder(UNIT_1_TITLE, UNIT_3_TITLE);
-  }
+        val result: List<UnitDto> = service.getUnitsBySection(1)
+
+        assertThat(result).hasSize(2)
+        assertThat(result)
+            .extracting<String> { it.title!! }
+            .containsExactlyInAnyOrder(UNIT_1_TITLE, UNIT_3_TITLE)
+    }
 }

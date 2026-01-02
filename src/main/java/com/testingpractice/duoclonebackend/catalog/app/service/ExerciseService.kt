@@ -20,7 +20,7 @@ open class ExerciseService(
         exerciseAttemptRepository.markUncheckedByUserAndLesson(userId, lessonId)
 
         val exercises = ArrayList(exerciseRepository.findAllByLessonId(lessonId))
-        exercises.sort(Comparator.comparingInt { it.orderIndex!! })
+        exercises.sortWith(Comparator.comparingInt { it.orderIndex!! })
 
         return exerciseOptionService.getRandomizedExercisesForLesson(exercises, userId)
     }

@@ -1,6 +1,28 @@
 package com.testingpractice.duoclonebackend.commons.constants
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.AUTH
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.CATALOG
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.COURSES
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.FOLLOWS
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GET_ALL_COURSES
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GET_AVATARS
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GET_FOLLOWS_BY_USER
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GET_LESSON_IDS_BY_UNIT
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GET_PAGINATED_LEADERBOARD
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GET_SECTIONS_BY_COURSE
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GET_SECTIONS_FROM_IDS
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GET_UNITS_BY_SECTION
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GET_UNITS_FROM_IDS
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GET_UNIT_IDS_BY_SECTION
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GET_USER_BY_ID
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GET_USER_COURSES
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GOOGLE_LOGIN
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.GOOGLE_LOGOUT
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.LEADERBOARD
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.SECTIONS
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.SECTION_TREE
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.UNITS
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants.USERS
 
-import com.testingpractice.duoclonebackend.commons.constants.pathConstants.*
 
 object publicEndpointConstants {
 

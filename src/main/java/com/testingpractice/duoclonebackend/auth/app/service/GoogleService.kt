@@ -1,7 +1,5 @@
 package com.testingpractice.duoclonebackend.auth.app.service
-
-import com.testingpractice.duoclonebackend.auth.app.service.AuthCookieService
-import com.testingpractice.duoclonebackend.service.JwtService
+import com.testingpractice.duoclonebackend.auth.infra.http.GoogleOAuthClient
 import com.testingpractice.duoclonebackend.user.api.dto.UserResponse
 import com.testingpractice.duoclonebackend.user.app.mapper.UserMapper
 import com.testingpractice.duoclonebackend.user.app.service.UserCreationService
@@ -21,7 +19,7 @@ open class GoogleService(
 ) {
 
     companion object {
-        private const val DAY = 24 * 60 * 60
+        private const val DAY : Long = 24 * 60 * 60
     }
 
     @Transactional
@@ -34,7 +32,7 @@ open class GoogleService(
         val token = oauth.exchangeCodeForAccessToken(code)
 
         // 2) Fetch user info
-        val googleUser = oauth.fetchUserInfo(token.accessToken())
+        val googleUser = oauth.fetchUserInfo(token.accessToken)
 
         // 3) Find user or create
         val user =

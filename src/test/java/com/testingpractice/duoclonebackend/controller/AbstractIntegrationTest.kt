@@ -1,246 +1,315 @@
 package com.testingpractice.duoclonebackend.controller;
 
-import com.testingpractice.duoclonebackend.auth.api.dto.AuthUser;
-import com.testingpractice.duoclonebackend.entity.*;
-import com.testingpractice.duoclonebackend.follow.infra.repository.FollowRepository;
-import com.testingpractice.duoclonebackend.repository.*;
-import io.restassured.RestAssured;
-import jakarta.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import support.Containers;
-
-import java.sql.Timestamp;
-import java.time.Clock;
-import java.time.ZoneId;
-import java.util.List;
-
-import static com.testingpractice.duoclonebackend.testutils.TestConstants.*;
-import static com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_3_TITLE;
-import static com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_4_TITLE;
-import static com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_5_TITLE;
-import static com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_6_TITLE;
-import static com.testingpractice.duoclonebackend.testutils.TestUtils.*;
+import com.testingpractice.duoclonebackend.auth.api.dto.AuthUser
+import com.testingpractice.duoclonebackend.catalog.domain.entity.Course
+import com.testingpractice.duoclonebackend.catalog.domain.entity.Lesson
+import com.testingpractice.duoclonebackend.catalog.domain.entity.LudoUnit
+import com.testingpractice.duoclonebackend.catalog.domain.entity.Section
+import com.testingpractice.duoclonebackend.catalog.infra.repository.CourseRepository
+import com.testingpractice.duoclonebackend.catalog.infra.repository.ExerciseOptionRepository
+import com.testingpractice.duoclonebackend.catalog.infra.repository.ExerciseRepository
+import com.testingpractice.duoclonebackend.catalog.infra.repository.LessonRepository
+import com.testingpractice.duoclonebackend.catalog.infra.repository.SectionRepository
+import com.testingpractice.duoclonebackend.catalog.infra.repository.UnitRepository
+import com.testingpractice.duoclonebackend.follow.infra.repository.FollowRepository
+import com.testingpractice.duoclonebackend.progress.infra.repository.ExerciseAttemptOptionRepository
+import com.testingpractice.duoclonebackend.progress.infra.repository.ExerciseAttemptRepository
+import com.testingpractice.duoclonebackend.progress.infra.repository.LessonCompletionRepository
+import com.testingpractice.duoclonebackend.progress.infra.repository.UserCourseProgressRepository
+import com.testingpractice.duoclonebackend.quest.domain.entity.MonthlyChallengeDefinition
+import com.testingpractice.duoclonebackend.quest.domain.entity.QuestDefinition
+import com.testingpractice.duoclonebackend.quest.infra.repository.MonthlyChallengeDefinitionRepository
+import com.testingpractice.duoclonebackend.quest.infra.repository.QuestDefinitionRepository
+import com.testingpractice.duoclonebackend.quest.infra.repository.UserDailyQuestRepository
+import com.testingpractice.duoclonebackend.quest.infra.repository.UserMonthlyChallengeRepository
+import com.testingpractice.duoclonebackend.testutils.TestConstants.FIXED_TIMESTAMP_1
+import com.testingpractice.duoclonebackend.testutils.TestConstants.FIXED_TIMESTAMP_2
+import com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_1_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_2_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_3_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_4_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_5_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_6_TITLE
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeCourse
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeExercise
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeExerciseAttempt
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeLesson
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeLessonCompletion
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeMonthlyChallengeDefinition
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeQuestDefinition
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeSection
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeUnit
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeUser
+import com.testingpractice.duoclonebackend.testutils.TestUtils.makeUserCourseProgress
+import com.testingpractice.duoclonebackend.user.infra.repository.UserRepository
+import io.restassured.RestAssured
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.boot.test.web.server.LocalServerPort
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Import
+import org.springframework.context.annotation.Profile
+import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
+import support.Containers
+import java.sql.Timestamp
+import java.time.Clock
+import java.time.ZoneId
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@Import({
-        AbstractIntegrationTest.FixedClockConfig.class,
-        AbstractIntegrationTest.TestSecurityConfig.class
-})
-public abstract class AbstractIntegrationTest {
+@Import(
+        AbstractIntegrationTest.FixedClockConfig::class,
+        AbstractIntegrationTest.TestSecurityConfig::class
+)
+abstract class AbstractIntegrationTest {
 
-  static { Containers.MYSQL.isRunning(); } // forces class load/start
+  companion object {
 
-  @DynamicPropertySource
-  static void mysqlProps(DynamicPropertyRegistry r) {
-    r.add("spring.datasource.url", Containers.MYSQL::getJdbcUrl);
-    r.add("spring.datasource.username", Containers.MYSQL::getUsername);
-    r.add("spring.datasource.password", Containers.MYSQL::getPassword);
-    r.add("spring.jpa.hibernate.ddl-auto", () -> "create-drop");
+    init {
+      Containers.MYSQL.isRunning // force startup
+    }
+
+    @JvmStatic
+    @DynamicPropertySource
+    fun mysqlProps(r: DynamicPropertyRegistry) {
+      r.add("spring.datasource.url") { Containers.MYSQL.jdbcUrl }
+      r.add("spring.datasource.username") { Containers.MYSQL.username }
+      r.add("spring.datasource.password") { Containers.MYSQL.password }
+      r.add("spring.jpa.hibernate.ddl-auto") { "create-drop" }
+    }
+
+    @JvmStatic
+    @BeforeAll
+    fun restAssuredLogging() {
+      RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
+    }
   }
+
   @LocalServerPort
-  protected int port;
+  protected var port: Int = 0
 
-
-
-  @Autowired protected UnitRepository unitRepository;
-  @Autowired protected SectionRepository sectionRepository;
-  @Autowired protected CourseRepository courseRepository;
-  @Autowired protected QuestDefinitionRepository questDefinitionRepository;
-  @Autowired protected ExerciseAttemptRepository exerciseAttemptRepository;
-  @Autowired protected ExerciseRepository exerciseRepository;
-  @Autowired protected FollowRepository followRepository;
-  @Autowired protected ExerciseOptionRepository exerciseOptionRepository;
-  @Autowired protected ExerciseAttemptOptionRepository exerciseAttemptOptionRepository;
-  @Autowired protected UserDailyQuestRepository userDailyQuestRepository;
-  @Autowired protected MonthlyChallengeDefinitionRepository monthlyChallengeDefinitionRepository;
-  @Autowired protected UserMonthlyChallengeRepository userMonthlyChallengeRepository;
-  @Autowired protected UserRepository userRepository;
-  @Autowired protected LessonRepository lessonRepository;
-  @Autowired protected LessonCompletionRepository lessonCompletionRepository;
-  @Autowired protected UserCourseProgressRepository userCourseProgressRepository;
+  @Autowired protected lateinit var unitRepository: UnitRepository
+  @Autowired protected lateinit var sectionRepository: SectionRepository
+  @Autowired protected lateinit var courseRepository: CourseRepository
+  @Autowired protected lateinit var questDefinitionRepository: QuestDefinitionRepository
+  @Autowired protected lateinit var exerciseAttemptRepository: ExerciseAttemptRepository
+  @Autowired protected lateinit var exerciseRepository: ExerciseRepository
+  @Autowired protected lateinit var followRepository: FollowRepository
+  @Autowired protected lateinit var exerciseOptionRepository: ExerciseOptionRepository
+  @Autowired protected lateinit var exerciseAttemptOptionRepository: ExerciseAttemptOptionRepository
+  @Autowired protected lateinit var userDailyQuestRepository: UserDailyQuestRepository
+  @Autowired protected lateinit var monthlyChallengeDefinitionRepository: MonthlyChallengeDefinitionRepository
+  @Autowired protected lateinit var userMonthlyChallengeRepository: UserMonthlyChallengeRepository
+  @Autowired protected lateinit var userRepository: UserRepository
+  @Autowired protected lateinit var lessonRepository: LessonRepository
+  @Autowired protected lateinit var lessonCompletionRepository: LessonCompletionRepository
+  @Autowired protected lateinit var userCourseProgressRepository: UserCourseProgressRepository
 
   @Autowired
-  JdbcTemplate jdbc;
+  protected lateinit var jdbc: JdbcTemplate
 
+  protected lateinit var course1: Course
+  protected lateinit var l1: Lesson
+  protected lateinit var l2: Lesson
+  protected lateinit var l3: Lesson
+  protected lateinit var l4: Lesson
+  protected lateinit var l5: Lesson
+  protected lateinit var l6: Lesson
 
-  protected Course course1;
-  protected Lesson l1;
-  protected Lesson l2;
-  protected Lesson l3;
-  protected Lesson l4;
-  protected Lesson l5;
-  protected Lesson l6;
+  protected lateinit var s1: Section
 
-  protected Section s1;
+  protected lateinit var u1: LudoUnit
+  protected lateinit var u2: LudoUnit
+  protected lateinit var u3: LudoUnit
 
-  protected Unit u1;
-  protected Unit u2;
-    protected Unit u3;
-
-  protected MonthlyChallengeDefinition monthlyChallengeDefinition;
-  protected List<QuestDefinition> questDefinitions;
-
-
-
-  @BeforeAll
-  static void restAssuredLogging() {
-    RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-  }
+  protected lateinit var monthlyChallengeDefinition: MonthlyChallengeDefinition
+  protected lateinit var questDefinitions: List<QuestDefinition>
 
   @BeforeEach
-  void restAssuredBase() {
-    RestAssured.baseURI = "http://localhost";
-    RestAssured.port = port;
-    initializeCoursesSectionsAndLessons();
+  fun restAssuredBase() {
+    RestAssured.baseURI = "http://localhost"
+    RestAssured.port = port
+    initializeCoursesSectionsAndLessons()
   }
 
   @TestConfiguration(proxyBeanMethods = false)
   @Profile("test")
-  static class FixedClockConfig {
+  open class FixedClockConfig {
     @Bean
-    Clock clock() {
-      return Clock.fixed(FIXED_TIMESTAMP_2.toInstant(), ZoneId.systemDefault());
-    }
+    open fun clock(): Clock =
+            Clock.fixed(FIXED_TIMESTAMP_2.toInstant(), ZoneId.systemDefault())
   }
 
   @TestConfiguration(proxyBeanMethods = false)
   @Profile("test")
-  static class TestSecurityConfig {
+  open class TestSecurityConfig {
     @Bean
-    SecurityFilterChain testFilter(HttpSecurity http) throws Exception {
-      http.csrf(csrf -> csrf.disable())
-              .authorizeHttpRequests(a -> a.anyRequest().authenticated())
-              .addFilterBefore((req, res, chain) -> {
-                var request = (HttpServletRequest) req;
-                String header = request.getHeader("X-Test-User-Id");
-                int uid = (header != null) ? Integer.parseInt(header) : 1;
+    open fun testFilter(http: HttpSecurity): SecurityFilterChain {
+      http
+              .csrf { it.disable() }
+                .authorizeHttpRequests { it.anyRequest().authenticated() }
+          .addFilterBefore(
+              { req, res, chain ->
+                  val request = req as HttpServletRequest
+                  val response = res as HttpServletResponse
 
-                var auth = new UsernamePasswordAuthenticationToken(new AuthUser(uid), null, List.of());
-                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                  val uid = request.getHeader("X-Test-User-Id")?.toInt() ?: 1
 
-                chain.doFilter(req, res);
-              }, UsernamePasswordAuthenticationFilter.class);
-      return http.build();
+                  val auth = UsernamePasswordAuthenticationToken(
+                      AuthUser(uid),
+                      null,
+                      emptyList()
+                  )
+                  auth.details = WebAuthenticationDetailsSource().buildDetails(request)
+                  SecurityContextHolder.getContext().authentication = auth
+
+                  chain.doFilter(request, response)
+              },
+              UsernamePasswordAuthenticationFilter::class.java
+          )
+
+      return http.build()
     }
   }
 
-  protected void initializeCoursesSectionsAndLessons () {
+  protected fun initializeCoursesSectionsAndLessons() {
 
+    course1 = courseRepository.save(makeCourse("Course 1", "defaultImg"))
 
-    course1 = courseRepository.save(makeCourse("Course 1", "defaultImg"));
+    s1 = sectionRepository.save(makeSection("Section 1", course1.id!!, 1))
+    val s1Id = s1.id!!
 
-    s1 = sectionRepository.save(makeSection("Section 1", course1.getId(), 1));
-    Integer s1Id = s1.getId();
+            val units = unitRepository.saveAll(
+            listOf(
+                    makeUnit("Unit 1", course1.id!!, s1Id, 1),
+    makeUnit("Unit 2", course1.id!!, s1Id, 2),
+    makeUnit("Unit 3", course1.id!!, s1Id, 3)
+            )
+        )
 
-    List<Unit> units = unitRepository.saveAll(
-            List.of(
-                    makeUnit("Unit 1", course1.getId(), s1Id, 1), makeUnit("Unit 2", course1.getId(), s1Id, 2), makeUnit("Unit 3", course1.getId(), s1Id, 3)));
+    u1 = units[0]
+    u2 = units[1]
+    u3 = units[2]
 
-    u1 = units.get(0);
-    u2 = units.get(1);
-    u3 = units.get(2);
+    val savedLessons = lessonRepository.saveAll(
+            listOf(
+                    makeLesson(LESSON_1_TITLE, u1.id!!, 1, "Exercise"),
+    makeLesson(LESSON_2_TITLE, u1.id!!, 2, "Exercise"),
+    makeLesson(LESSON_3_TITLE, u2.id!!, 1, "Exercise"),
+    makeLesson(LESSON_4_TITLE, u2.id!!, 2, "Exercise"),
+    makeLesson(LESSON_5_TITLE, u3.id!!, 1, "Exercise"),
+    makeLesson(LESSON_6_TITLE, u3.id!!, 2, "Exercise")
+            )
+        )
 
-    Integer u1Id = u1.getId();
-    Integer u2Id = u2.getId();
-    Integer u3Id = u3.getId();
+    l1 = savedLessons[0]
+    l2 = savedLessons[1]
+    l3 = savedLessons[2]
+    l4 = savedLessons[3]
+    l5 = savedLessons[4]
+    l6 = savedLessons[5]
 
-    List<Lesson> savedLessons =
-            lessonRepository.saveAll(
-                    List.of(
-                            makeLesson(LESSON_1_TITLE, u1Id, 1, "Exercise"),
-                            makeLesson(LESSON_2_TITLE, u1Id, 2, "Exercise"),
-                            makeLesson(LESSON_3_TITLE, u2Id, 1, "Exercise"),
-                            makeLesson(LESSON_4_TITLE, u2Id, 2, "Exercise"),
-                            makeLesson(LESSON_5_TITLE, u3Id, 1, "Exercise"),
-                            makeLesson(LESSON_6_TITLE, u3Id, 2, "Exercise")));
+    questDefinitions = questDefinitionRepository.saveAll(
+            listOf(
+                    makeQuestDefinition("STREAK", 1, 10, true),
+                    makeQuestDefinition("ACCURACY", 2, 10, true),
+                    makeQuestDefinition("PERFECT", 1, 10, true)
+            )
+    )
 
-    l1 = savedLessons.get(0);
-    l2 = savedLessons.get(1);
-    l3 = savedLessons.get(2);
-
-    l4 = savedLessons.get(3);
-    l5 = savedLessons.get(4);
-    l6 = savedLessons.get(5);
-
-    questDefinitions = questDefinitionRepository.saveAll(List.of(
-            makeQuestDefition("STREAK", 1, 10, true),
-            makeQuestDefition("ACCURACY", 2, 10, true),
-            makeQuestDefition("PERFECT", 1, 10, true)
-    ));
-
-    monthlyChallengeDefinition = monthlyChallengeDefinitionRepository.save(makeMonthlyChallengeDefinition("COMPLETE_QUESTS", 30, 200, true));
-
-
+    monthlyChallengeDefinition =
+            monthlyChallengeDefinitionRepository.save(
+                    makeMonthlyChallengeDefinition("COMPLETE_QUESTS", 30, 200, true)
+            )
   }
 
+  protected fun setupUserCompletionForTest(
+          correctScores: Int,
+          courseId: Int,
+          submittedLessonId: Int,
+          currentLessonId: Int,
+          completedLessonsCount: Int,
+          usersPoints: Int,
+          streakLength: Int,
+          lastSubmission: Timestamp,
+          attemptTime: Timestamp
+  ): Int {
 
-  protected Integer setupUserCompletionForTest (Integer correctScores,Integer courseId, Integer submittedLessonId, Integer currentLessonId, Integer completedLessonsCount, Integer usersPoints, Integer streakLength, Timestamp lastSubmission, Timestamp AttemptTime) {
+    val user =
+            userRepository.save(
+                    makeUser(
+                            courseId,
+                            "testuser",
+                            "test",
+                            "user",
+                            "emailOne",
+                            "default",
+                            usersPoints,
+                            FIXED_TIMESTAMP_1,
+                            lastSubmission,
+                            streakLength
+                    )
+            )
 
-    User user = userRepository.save(makeUser(courseId, "testuser", "test", "user", "emailOne", "default", usersPoints, FIXED_TIMESTAMP_1, lastSubmission, streakLength));
-    Integer userId = user.getId();
+    val userId = user.id!!
 
-    userCourseProgressRepository.save(makeUserCourseProgress(userId, courseId, false, currentLessonId, FIXED_TIMESTAMP_1));
+            userCourseProgressRepository.save(
+                    makeUserCourseProgress(
+                            userId,
+                            courseId,
+                            false,
+                            currentLessonId,
+                            FIXED_TIMESTAMP_1
+                    )
+            )
 
-    List<Exercise> savedExercises = exerciseRepository.saveAll(
-            List.of(
+    val savedExercises = exerciseRepository.saveAll(
+            listOf(
                     makeExercise(submittedLessonId, "Translate", 1),
                     makeExercise(submittedLessonId, "Translate", 2),
                     makeExercise(submittedLessonId, "Translate", 3)
             )
-    );
+    )
 
-    Exercise e1 = savedExercises.get(0);
-    Exercise e2 = savedExercises.get(1);
-    Exercise e3 = savedExercises.get(2);
+    val exerciseIds = savedExercises.map { it.id!! }
 
-    List<Integer> exercises = List.of(
-            e1.getId(),
-            e2.getId(),
-            e3.getId()
-    );
+    val completedLessons =
+            listOf(l1, l2, l3, l4, l5, l6).map { it.id!! }
 
-    List<Integer> completedLessons = List.of(
-            l1.getId(),
-            l2.getId(),
-            l3.getId(),
-            l4.getId(),
-            l5.getId(),
-            l6.getId()
-    );
-
-    for (int i = 0; i < 3; i++) {
-      Integer score = i < correctScores ? 5 : 0;
-      exerciseAttemptRepository.save(makeExerciseAttempt(exercises.get(i), userId, false, AttemptTime, i + 1, score));
+    repeat(3) { i ->
+            val score = if (i < correctScores) 5 else 0
+      exerciseAttemptRepository.save(
+              makeExerciseAttempt(
+                      exerciseIds[i],
+                      userId,
+                      false,
+                      attemptTime,
+                      i + 1,
+                      score
+              )
+      )
     }
 
-    for (int i = 0; i < completedLessonsCount; i++) {
-      Integer lessonId = completedLessons.get(i);
-      lessonCompletionRepository.save(makeLessonCompletion(userId, lessonId, course1.getId(), 10));
+    repeat(completedLessonsCount) { i ->
+            lessonCompletionRepository.save(
+                    makeLessonCompletion(userId, completedLessons[i], course1.id!!, 10)
+            )
     }
 
-    return userId;
-
+    return userId
   }
-
-
 }

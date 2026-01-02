@@ -1,9 +1,9 @@
 package com.testingpractice.duoclonebackend.progress.api.controller
 
 import com.testingpractice.duoclonebackend.commons.constants.pathConstants
-import com.testingpractice.duoclonebackend.dto.LessonCompleteRequest
-import com.testingpractice.duoclonebackend.dto.LessonCompleteResponse
-import com.testingpractice.duoclonebackend.service.LessonCompletionService
+import com.testingpractice.duoclonebackend.progress.api.dto.LessonCompleteRequest
+import com.testingpractice.duoclonebackend.progress.api.dto.LessonCompleteResponse
+import com.testingpractice.duoclonebackend.progress.app.service.LessonCompletionService
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,9 +22,9 @@ class LessonCompletionController(
         @AuthenticationPrincipal(expression = "id") userId: Int
     ): LessonCompleteResponse {
         return lessonCompletionService.getCompletedLesson(
-            lessonCompleteRequest.lessonId(),
+            lessonCompleteRequest.lessonId,
             userId,
-            lessonCompleteRequest.courseId()
+            lessonCompleteRequest.courseId
         )
     }
 }

@@ -1,10 +1,10 @@
 package com.testingpractice.duoclonebackend.catalog.api.controller
 
+import com.testingpractice.duoclonebackend.catalog.api.dto.LessonDto
+import com.testingpractice.duoclonebackend.catalog.api.dto.UnitDto
+import com.testingpractice.duoclonebackend.catalog.app.service.LessonService
 import com.testingpractice.duoclonebackend.commons.constants.pathConstants
-import com.testingpractice.duoclonebackend.dto.LessonDto
-import com.testingpractice.duoclonebackend.dto.UnitDto
-import com.testingpractice.duoclonebackend.service.LessonService
-import com.testingpractice.duoclonebackend.service.UnitService
+import com.testingpractice.duoclonebackend.progress.app.service.UnitService
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

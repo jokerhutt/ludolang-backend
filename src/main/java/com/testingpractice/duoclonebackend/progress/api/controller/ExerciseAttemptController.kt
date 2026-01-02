@@ -1,9 +1,8 @@
 package com.testingpractice.duoclonebackend.progress.api.controller
-
 import com.testingpractice.duoclonebackend.commons.constants.pathConstants
-import com.testingpractice.duoclonebackend.dto.ExerciseAttemptRequest
-import com.testingpractice.duoclonebackend.dto.ExerciseAttemptResponse
-import com.testingpractice.duoclonebackend.service.ExerciseAttemptService
+import com.testingpractice.duoclonebackend.progress.api.dto.ExerciseAttemptRequest
+import com.testingpractice.duoclonebackend.progress.api.dto.ExerciseAttemptResponse
+import com.testingpractice.duoclonebackend.progress.app.service.ExerciseAttemptService
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,8 +21,8 @@ class ExerciseAttemptController(
         @AuthenticationPrincipal(expression = "id") userId: Int
     ): ExerciseAttemptResponse {
         return exerciseAttemptService.submitExerciseAttempt(
-            exerciseAttemptRequest.exerciseId(),
-            exerciseAttemptRequest.optionIds(),
+            exerciseAttemptRequest.exerciseId,
+            exerciseAttemptRequest.optionIds,
             userId
         )
     }

@@ -1,54 +1,45 @@
-package com.testingpractice.duoclonebackend.controller;
+package com.testingpractice.duoclonebackend.controller
+import com.testingpractice.duoclonebackend.catalog.api.dto.FlatSectionTreeResponse
+import com.testingpractice.duoclonebackend.catalog.api.dto.FlatUnit
+import com.testingpractice.duoclonebackend.catalog.domain.entity.Section
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants
+import io.restassured.RestAssured.given
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-import com.testingpractice.duoclonebackend.commons.constants.pathConstants;
-import com.testingpractice.duoclonebackend.dto.FlatTree.FlatSectionTreeResponse;
-import com.testingpractice.duoclonebackend.dto.FlatTree.FlatUnit;
-import com.testingpractice.duoclonebackend.entity.Section;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
-public class CatalogIT extends AbstractIntegrationTest {
+class CatalogIT : AbstractIntegrationTest() {
 
     @BeforeEach
-    void seed () {
-
+    fun seed() {
+        // intentionally empty
     }
-
 
     @Test
-    public void getSectionTree_returnsTree () {
+    fun `get section tree returns tree`() {
 
-        Section section = s1;
-        Integer sectionId = section.getId();
+        val section: Section = s1
+        val sectionId: Int = section.id!!
 
-        FlatSectionTreeResponse res = submitGetFlatSectionTree(sectionId);
+        val res = submitGetFlatSectionTree(sectionId)
 
-        assertThat(res).isNotNull();
-        assertThat(res.units().size()).isEqualTo(3);
+        assertThat(res).isNotNull
+        assertThat(res.units.size).isEqualTo(3)
 
-        for (FlatUnit unit : res.units()) {
-            assertThat(unit.lessons()).isNotNull();
-            assertThat(unit.lessons().isEmpty()).isFalse();
+        for (unit: FlatUnit in res.units) {
+            assertThat(unit.lessons).isNotNull
+            assertThat(unit.lessons.isEmpty()).isFalse()
         }
-
-
-
-
     }
 
-    private FlatSectionTreeResponse submitGetFlatSectionTree(Integer sectionId) {
+    private fun submitGetFlatSectionTree(sectionId: Int): FlatSectionTreeResponse {
         return given()
-                .pathParam("sectionId", sectionId)
-                .when()
-                .get(pathConstants.CATALOG + pathConstants.SECTION_TREE)
-                .then()
-                .statusCode(200)
-                .extract()
-                .as(FlatSectionTreeResponse.class);
+            .pathParam("sectionId", sectionId)
+            .`when`()
+            .get(pathConstants.CATALOG + pathConstants.SECTION_TREE)
+            .then()
+            .statusCode(200)
+            .extract()
+            .`as`(FlatSectionTreeResponse::class.java)
     }
-
-
 }

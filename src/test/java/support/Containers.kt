@@ -2,11 +2,12 @@ package support;
 
 import org.testcontainers.containers.MySQLContainer;
 
-public final class Containers {
-    public static final MySQLContainer<?> MYSQL =
-            new MySQLContainer<>("mysql:8.0.39");
+object Containers {
 
-    static { MYSQL.start(); }
+val MYSQL: MySQLContainer<*> =
+MySQLContainer("mysql:8.0.39")
 
-    private Containers() {}
+init {
+    MYSQL.start()
+}
 }
