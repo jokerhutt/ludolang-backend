@@ -1,8 +1,8 @@
 package com.testingpractice.duoclonebackend.controller;
 
-import com.testingpractice.duoclonebackend.constants.pathConstants;
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants;
 import com.testingpractice.duoclonebackend.entity.User;
-import com.testingpractice.duoclonebackend.exception.ErrorCode;
+import com.testingpractice.duoclonebackend.commons.exception.ErrorCode;
 import com.testingpractice.duoclonebackend.follow.api.dto.FollowFollowingListResponse;
 import com.testingpractice.duoclonebackend.follow.api.dto.FollowResponse;
 import org.junit.jupiter.api.BeforeEach;

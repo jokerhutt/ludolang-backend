@@ -1,7 +1,7 @@
 package com.testingpractice.duoclonebackend.follow.app.service
 
-import com.testingpractice.duoclonebackend.exception.ApiException
-import com.testingpractice.duoclonebackend.exception.ErrorCode
+import com.testingpractice.duoclonebackend.commons.exception.ApiException
+import com.testingpractice.duoclonebackend.commons.exception.ErrorCode
 import com.testingpractice.duoclonebackend.follow.api.dto.FollowFollowingListResponse
 import com.testingpractice.duoclonebackend.follow.api.dto.FollowResponse
 import com.testingpractice.duoclonebackend.follow.domain.entity.Follow

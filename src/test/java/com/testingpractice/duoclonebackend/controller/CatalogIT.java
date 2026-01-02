@@ -1,6 +1,6 @@
 package com.testingpractice.duoclonebackend.controller;
 
-import com.testingpractice.duoclonebackend.constants.pathConstants;
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants;
 import com.testingpractice.duoclonebackend.dto.FlatTree.FlatSectionTreeResponse;
 import com.testingpractice.duoclonebackend.dto.FlatTree.FlatUnit;
 import com.testingpractice.duoclonebackend.entity.Section;

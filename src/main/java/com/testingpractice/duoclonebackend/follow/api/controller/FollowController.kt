@@ -1,6 +1,6 @@
 package com.testingpractice.duoclonebackend.follow.api.controller
 
-import com.testingpractice.duoclonebackend.constants.pathConstants
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants
 import com.testingpractice.duoclonebackend.follow.app.service.FollowService
 import com.testingpractice.duoclonebackend.follow.api.dto.FollowFollowingListResponse
 import com.testingpractice.duoclonebackend.follow.api.dto.FollowRequest

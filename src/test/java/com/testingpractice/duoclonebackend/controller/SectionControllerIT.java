@@ -3,7 +3,7 @@ package com.testingpractice.duoclonebackend.controller;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.testingpractice.duoclonebackend.constants.pathConstants;
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants;
 import java.util.List;
 
 import com.testingpractice.duoclonebackend.dto.UnitDto;

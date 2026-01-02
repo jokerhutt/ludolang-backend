@@ -1,6 +1,6 @@
 package com.testingpractice.duoclonebackend.quest.api.controller
 
-import com.testingpractice.duoclonebackend.constants.pathConstants
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants
 import com.testingpractice.duoclonebackend.quest.api.dto.QuestResponse
 import com.testingpractice.duoclonebackend.quest.app.service.MonthlyChallengeService
 import org.springframework.security.core.annotation.AuthenticationPrincipal

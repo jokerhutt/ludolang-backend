@@ -1,6 +1,6 @@
 package com.testingpractice.duoclonebackend.controller;
 
-import com.testingpractice.duoclonebackend.auth.AuthUser;
+import com.testingpractice.duoclonebackend.auth.api.dto.AuthUser;
 import com.testingpractice.duoclonebackend.entity.*;
 import com.testingpractice.duoclonebackend.follow.infra.repository.FollowRepository;
 import com.testingpractice.duoclonebackend.repository.*;
@@ -25,18 +25,12 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import support.Containers;
 
 import java.sql.Timestamp;
 import java.time.Clock;
-import java.time.Duration;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static com.testingpractice.duoclonebackend.testutils.TestConstants.*;
 import static com.testingpractice.duoclonebackend.testutils.TestConstants.LESSON_3_TITLE;

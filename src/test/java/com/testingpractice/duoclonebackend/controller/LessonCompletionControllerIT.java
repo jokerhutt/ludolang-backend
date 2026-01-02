@@ -6,16 +6,15 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-import com.testingpractice.duoclonebackend.constants.pathConstants;
+import com.testingpractice.duoclonebackend.commons.constants.pathConstants;
 import com.testingpractice.duoclonebackend.dto.LessonCompleteResponse;
 import com.testingpractice.duoclonebackend.entity.*;
 
 import java.util.Map;
 
-import com.testingpractice.duoclonebackend.exception.ErrorCode;
+import com.testingpractice.duoclonebackend.commons.exception.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 class LessonCompletionControllerIT extends AbstractIntegrationTest {
 

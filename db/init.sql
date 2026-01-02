@@ -74,7 +74,7 @@ create table sections
             on delete cascade
 );
 
-create table units
+create table ludoUnits
 (
     id             int auto_increment
         primary key,
@@ -105,7 +105,7 @@ create table lessons
     constraint id_UNIQUE
         unique (id),
     constraint fk_lessons_unit
-        foreign key (unit_id) references units (id)
+        foreign key (unit_id) references ludoUnits (id)
             on delete cascade
 );
 
@@ -250,7 +250,7 @@ create table path_icons
         primary key,
     icon    varchar(255) not null,
     constraint fk_unit
-        foreign key (unit_id) references units (id)
+        foreign key (unit_id) references ludoUnits (id)
             on delete cascade
 );
 

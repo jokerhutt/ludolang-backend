@@ -1,6 +1,6 @@
 package com.testingpractice.duoclonebackend.user.app.mapper
 
-import com.testingpractice.duoclonebackend.commons.BasicMapper
+import com.testingpractice.duoclonebackend.commons.mapper.BasicMapper
 import com.testingpractice.duoclonebackend.user.api.dto.UserResponse
 import com.testingpractice.duoclonebackend.user.domain.entity.User
 import org.springframework.stereotype.Component

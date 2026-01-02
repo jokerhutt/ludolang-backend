@@ -1,8 +1,8 @@
 package com.testingpractice.duoclonebackend.user.app.service
 import com.testingpractice.duoclonebackend.dto.UserCourseProgressDto
 import com.testingpractice.duoclonebackend.entity.UserCourseProgress
-import com.testingpractice.duoclonebackend.exception.ApiException
-import com.testingpractice.duoclonebackend.exception.ErrorCode
+import com.testingpractice.duoclonebackend.commons.exception.ApiException
+import com.testingpractice.duoclonebackend.commons.exception.ErrorCode
 import com.testingpractice.duoclonebackend.mapper.UserCourseProgressMapper
 import com.testingpractice.duoclonebackend.repository.LessonCompletionRepository
 import com.testingpractice.duoclonebackend.repository.UserCourseProgressRepository

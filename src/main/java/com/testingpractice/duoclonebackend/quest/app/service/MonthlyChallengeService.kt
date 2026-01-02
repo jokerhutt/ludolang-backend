@@ -1,7 +1,7 @@
 package com.testingpractice.duoclonebackend.quest.app.service
 
-import com.testingpractice.duoclonebackend.exception.ApiException
-import com.testingpractice.duoclonebackend.exception.ErrorCode
+import com.testingpractice.duoclonebackend.commons.exception.ApiException
+import com.testingpractice.duoclonebackend.commons.exception.ErrorCode
 import com.testingpractice.duoclonebackend.quest.api.dto.QuestResponse
 import com.testingpractice.duoclonebackend.quest.domain.entity.embeddable.UserMonthlyChallengeId
 import com.testingpractice.duoclonebackend.quest.infra.repository.MonthlyChallengeDefinitionRepository
