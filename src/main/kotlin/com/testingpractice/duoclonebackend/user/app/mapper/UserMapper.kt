@@ -14,14 +14,14 @@ class UserMapper(
         basicMapper.one(user) {
             UserResponse(
                 id = it.id!!,
-                username = it.username!!,
-                firstName = it.firstName!!,
-                lastName = it.lastName!!,
+                username = it.username,
+                firstName = it.firstName ?: "Unnamed",
+                lastName = it.lastName ?: "User",
                 currentCourseId = it.currentCourseId,
                 pfpSrc = it.pfpSrc,
-                points = it.points!!,
-                streakLength = it.streakLength!!,
-                createdAt = it.createdAt!!
+                points = it.points,
+                streakLength = it.streakLength,
+                createdAt = it.createdAt
             )
         }
 

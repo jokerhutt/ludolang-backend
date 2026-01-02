@@ -40,8 +40,8 @@ class JwtCookieAuthenticationFilter(
                     WebAuthenticationDetailsSource().buildDetails(req)
 
                 SecurityContextHolder.getContext().authentication = auth
-            } catch (_: ResponseStatusException) {
-                // invalid token → leave unauthenticated
+            } catch (e: Exception) {
+                println("JWT invalid: ${e.message}")
             }
         }
 

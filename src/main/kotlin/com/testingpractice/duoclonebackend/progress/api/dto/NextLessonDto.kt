@@ -5,8 +5,8 @@ import com.testingpractice.duoclonebackend.catalog.domain.entity.Lesson
 
 data class NextLessonDto(
     val nextLesson: Lesson?,
-
-    @get:JsonProperty("isPassed")
+    @get:JsonProperty("isCourseCompleted")
     @set:JsonProperty("isCourseCompleted")
     var isCourseCompleted: Boolean
 )
+

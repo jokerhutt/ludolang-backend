@@ -16,13 +16,13 @@ class AuthCookieService {
     @Value("\${auth.cookie.path:/}")
     private lateinit var cookiePath: String
 
-    @Value("\${auth.cookie.domain}")
+    @Value("\${auth.cookie.domain:localhost}")
     private lateinit var cookieDomain: String
 
-    @Value("\${auth.cookie.same-site:none}")
+    @Value("\${auth.cookie.same-site:Lax}")
     private lateinit var sameSite: String
 
-    @Value("\${auth.cookie.secure:true}")
+    @Value("\${auth.cookie.secure:false}")
     private var secure: Boolean = true
 
     @Value("\${auth.cookie.max-age-seconds:86400}")

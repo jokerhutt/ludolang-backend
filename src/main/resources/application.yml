@@ -15,6 +15,9 @@ spring:
   error:
     include-binding-errors: always
 
+cors:
+  origins: ${FRONTEND_ORIGINS}
+
 server:
   error:
     include-binding-errors: always
@@ -32,6 +35,6 @@ auth:
     name: jwt
     path: /
     domain: ${AUTH_COOKIE_DOMAIN:localhost}
-    same-site: none
-    secure: true
+    same-site: ${AUTH_COOKIE_SAME_SITE:Lax}
+    secure: ${AUTH_COOKIE_SECURE:false}
     max-age-seconds: 86400

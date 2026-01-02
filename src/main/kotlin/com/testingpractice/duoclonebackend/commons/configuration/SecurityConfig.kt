@@ -26,6 +26,8 @@ open class SecurityConfig(
             }
             .authorizeHttpRequests {
                 it.requestMatchers(*PUBLIC_ENDPOINTS).permitAll()
+                it.requestMatchers("/media/**").permitAll()
+                it.requestMatchers("/actuator/**").permitAll()
                 it.anyRequest().authenticated()
             }
             .httpBasic { it.disable() }
