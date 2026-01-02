@@ -12,7 +12,7 @@ This repository contains the backend code for Ludolang, a language learning webs
 
 It is a non-commercial project, intended to showcase my skills and to hopefully help others make similar apps.
 
-The project is written using Kotlin 1.9.25 and Java 21. It uses PostgreSQL as a database.
+The project is written using Kotlin 1.9.25 and Java 21. It uses MySQL as a database.
 
 ## Requirements
 - Docker
@@ -20,7 +20,7 @@ The project is written using Kotlin 1.9.25 and Java 21. It uses PostgreSQL as a 
 
 ## Project Setup
 
-If you are only interested in running the project locally, I have provided a setup that creates a local PostgreSQL instance with the schema & pre-seeded with a demo user / course. With this, you'll have access to all features except AI and Google authentication.
+If you are only interested in running the project locally, I have provided a setup that creates a local MySQL instance with the schema & pre-seeded with a demo user / course. With this, you'll have access to all features except AI and Google authentication.
 
 1. Clone the project
 ```
@@ -35,14 +35,14 @@ cd /path/to/ludolang-backend
 4. Place your google client ID and google client secret in the `.env` file (See [Setting up Google Oauth](#setting-up-google-oauth))
 5. Optionally adjust the `FRONTEND_ORIGINS` and `AUTH_COOKIE_DOMAIN` to match your frontend url.
 
-6. Run the PostgreSQL Container
+6. Run the MySQL Container
 ```
  docker compose -f docker-compose.db.yml up -d
 ```
 7. Run the Application Container (Might take ~60sec)
 ```
-docker compose -f docker-compose.ludocode.yml build ludocode-backend
-docker compose -f docker-compose.ludocode.yml up -d ludocode-backend
+docker compose -f docker-compose.duoclone.yml build duoclone-backend
+docker compose -f docker-compose.duoclone.yml up -d duoclone-backend
 ```
 
 ### Setting up Google OAuth

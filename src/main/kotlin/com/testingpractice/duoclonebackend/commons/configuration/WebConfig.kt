@@ -13,7 +13,12 @@ open class WebConfig(
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOriginPatterns(*corsProps.origins.toTypedArray())
+            .allowedOrigins(
+                "http://localhost:5173",
+                "https://duoclone.jokerhut.com",
+                "https://www.duoclone.jokerhut.com",
+                "https://exquisite-lily-dbf9cd.netlify.app"
+            )
             .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
             .allowedHeaders("*")
             .allowCredentials(true)
