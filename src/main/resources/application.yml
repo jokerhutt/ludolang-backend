@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: duoclone-backend
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+  error:
+    include-binding-errors: always
+
+cors:
+  origins: ${FRONTEND_ORIGINS}
+
+server:
+  error:
+    include-binding-errors: always
+
+jwt:
+  secret: ${JWT_SECRET}
+
+google:
+  client-id: ${GOOGLE_CLIENT_ID}
+  client-secret: ${GOOGLE_CLIENT_SECRET}
+  redirect-uri: postmessage
+
+auth:
+  cookie:
+    name: jwt
+    path: /
+    domain: ${AUTH_COOKIE_DOMAIN:localhost}
+    same-site: ${AUTH_COOKIE_SAME_SITE:Lax}
+    secure: ${AUTH_COOKIE_SECURE:false}
+    max-age-seconds: 86400
