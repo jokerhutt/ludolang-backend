@@ -1,16 +1,17 @@
 services:
-  postgres:
-    image: postgres:17
-    container_name: duoclone-postgres
+  mysql:
+    image: mysql:8.4
+    container_name: duoclone-mysql
     environment:
-      POSTGRES_DB: "${SPRING_DATASOURCE_DB_NAME}"
-      POSTGRES_USER: "${SPRING_DATASOURCE_USERNAME}"
-      POSTGRES_PASSWORD: "${SPRING_DATASOURCE_PASSWORD}"
+      MYSQL_DATABASE: "${SPRING_DATASOURCE_DB_NAME}"
+      MYSQL_USER: "${SPRING_DATASOURCE_USERNAME}"
+      MYSQL_PASSWORD: "${SPRING_DATASOURCE_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - mysqldata:/var/lib/mysql
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "5433:5432"
+      - "3306:3306"
 
 volumes:
-  pgdata:
+  mysqldata:
